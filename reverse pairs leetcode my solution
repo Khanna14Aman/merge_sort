@@ -1,0 +1,73 @@
+void merge(int low, int high, int mid, vector<int>&nums,int &count)
+{
+    int left= low;
+    int right= mid+1;
+    vector<int>temp;
+    while(left<=mid && right<=high)
+    {
+        if(nums[left]<=nums[right])
+        {
+            temp.emplace_back(nums[left++]);
+        }
+        else
+        {
+            temp.emplace_back(nums[right++]);
+        }
+    }
+    while(left<=mid)
+    {
+        temp.emplace_back(nums[left++]);
+    }
+    while(right<=high)
+    {
+        temp.emplace_back(nums[right++]);
+    }
+    for(int i =low;i<=high;i++)
+    {
+        nums[i]= temp[i-low];
+    }
+}
+void pir(int low, int high, int mid, vector<int>&nums, int &count)
+{
+    int i = low;
+    int j = mid+1;
+    for(j=mid+ 1;j<=high;j++)
+    {
+        while(i<=mid)
+        {
+            int long long b= nums[j];
+            if(nums[i]<=(2*b))
+            {
+                i++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        count += mid-i+1;;
+    }
+     
+}
+void merge_sort(int low, int high, vector<int>&nums, int &count)
+{
+    if(low<high)
+    {
+        int mid = (low+high)>>1;
+        merge_sort (low,mid,nums,count);
+        merge_sort (mid+1,high,nums,count);
+        pir(low,high,mid,nums,count);
+        merge(low,high,mid,nums,count);
+    }
+}
+class Solution {
+public:
+    int reversePairs(vector<int>& nums) {
+        int count=0;
+        int n = nums.size();
+        merge_sort(0,n-1,nums,count);
+        return count;
+        
+        
+    }
+};
